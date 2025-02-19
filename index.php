@@ -60,8 +60,8 @@ function parseLicenses(string $licenseTextSection)
       $officialNumReestr = trim($match[1]);
     }
 
-    if (preg_match('/Наименование лицензирующего органа,?\s*выдавшего или переоформившего лицензию\s*(.+?)(?=\n|$)/si', $block, $match)) {
-      $licenseData['issuerName'] = trim($match[1]);
+    if (preg_match('/Наименование лицензирующего органа,?\s*выдавшего или переоформившего лицензию\s*(.+?)(?=\n\d+|\n$|\nГРН|$)/si', $block, $match)) {
+      $licenseData['issuerName'] = trim(preg_replace('/\s+/', ' ', $match[1]));
     }
 
     if (preg_match('/Дата начала действия лицензии\s*(.+?)(?=\n|$)/si', $block, $match)) {
@@ -76,7 +76,14 @@ function parseLicenses(string $licenseTextSection)
       if (strlen($officialNumReestr) > 0) {
         $licenseData['officialNum'] = $officialNumReestr;
       }
-      $licenses[] = $licenseData;
+
+      $duplicatedLicense = array_filter($licenses, function ($license) use ($licenseData) {
+        return $license['officialNum'] === $licenseData['officialNum'];
+      });
+
+      if (empty($duplicatedLicense)) {
+        $licenses[] = $licenseData;
+      }
     }
   }
 
