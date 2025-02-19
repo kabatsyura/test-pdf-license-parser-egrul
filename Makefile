@@ -1,2 +1,2 @@
 test:
-		./vendor/bin/phpunit tests/ParserTest.php
+		./vendor/bin/phpunit tests/LicenseParserTest.php
