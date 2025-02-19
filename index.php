@@ -83,6 +83,6 @@ function parseLicenses(string $licenseTextSection)
   return $licenses;
 }
 
-$filePath = './files/7842388475.pdf';
-$licenses = extractLicenses($filePath);
-echo $licenses;
+// $filePath = './files/7842388475.pdf';
+// $licenses = extractLicenses($filePath);
+// echo $licenses;
